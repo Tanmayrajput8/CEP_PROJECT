@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tender.name }} Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-bar {
+            background-color: #3c4b64;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            background-color: #DC3545;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #a71d2a;
+        }
+
+        .logout-btn svg {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+        }
+
+        .container {
+            width: 60%;
+            margin: 40px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        h3 {
+            background: #3c4b64;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 16px;
+            padding: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 15px;
+            border-bottom: 2px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #3c4b64;
+            color: white;
+            border-radius: 10px;
+        }
+
+        td a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        .document-list {
+            padding-left: 15px;
+        }
+
+        .shortfall-warning {
+            color: red;
+            font-weight: bold;
+        }
+
+        .shortfall-section {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .shortfall-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: red;
+        }
+
+        .shortfall-btn {
+            display: inline-block;
+            margin: 3px 5px 3px 0;
+            padding: 6px 10px;
+            background-color: #eee;
+            color: #333;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .shortfall-btn:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <h2>Tender Details</h2>
+        <a href="{% url 'logout' %}" class="logout-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+            </svg>
+            Logout
+        </a>
+    </div>
+
+    <div class="container">
+        <p><strong>Tender Name:</strong> {{ tender.name }}</p>
+        <p><strong>Tender Number:</strong> {{ tender.tender_number }}</p>
+        <p><strong>Published Date:</strong> {{ tender.published_date }}</p>
+
+        <h3>Vendors and Submitted Documents</h3>
+        {% if vendors %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Vendor Name</th>
+                    <th>Submitted Documents</th>
+                    <th>Shortfall Documents</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vendor in vendors %}
+                <tr>
+                    <!-- Vendor Name -->
+                    <td><strong>{{ vendor.name }}</strong></td>
+
+                    <!-- Submitted Documents -->
+                    <td>
+                        {% if vendor.documents.all %}
+                            <ul class="document-list">
+                                {% for document in vendor.documents.all %}
+                                    <li>
+                                        <a href="{{ document.file.url }}" target="_blank">📄 Document {{ forloop.counter }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            No documents uploaded
+                        {% endif %}
+                    </td>
+
+                    <!-- Shortfall Documents -->
+                    <td>
+                        <a href="{% url 'shortfall_details' vendor.id 1 %}" class="shortfall-btn">📂 Shortfall 1</a>
+                        <a href="{% url 'shortfall_details' vendor.id 2 %}" class="shortfall-btn">📂 Shortfall 2</a>
+                        <a href="{% url 'shortfall_details' vendor.id 3 %}" class="shortfall-btn">📂 Shortfall 3</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>No vendors have participated yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

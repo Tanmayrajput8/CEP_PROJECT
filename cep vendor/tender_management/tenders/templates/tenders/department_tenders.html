@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tenders in {{ department.name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-bar {
+            background-color: #3c4b64;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            background-color: #DC3545;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #a71d2a;
+        }
+
+        .logout-btn svg {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+        }
+
+        .container {
+            width: 60%;
+            margin: 40px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #f9f9f9;
+            padding: 12px;
+            margin: 5px 0;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        li:hover {
+            background: #e0e0e0;
+        }
+
+        li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            display: block;
+        }
+
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .buttons a {
+            text-decoration: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .back-btn {
+            background: #007BFF;
+        }
+
+        .back-btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <h2>Tenders in {{ department.name }}</h2>
+        <a href="{% url 'logout' %}" class="logout-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+            </svg>
+            Logout
+        </a>
+    </div>
+
+    <div class="container">
+        <ul>
+            {% for tender in tenders %}
+                <li>
+                    <a href="{% url 'tender_details' tender.id %}">
+                        {{ tender.tender_number }} - {{ tender.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div class="buttons">
+            <a href="{% url 'select_department' %}" class="back-btn">Back to Departments</a>
+        </div>
+    </div>
+
+</body>
+</html>

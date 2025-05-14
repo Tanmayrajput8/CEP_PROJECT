@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Published Tenders</h2>
+    <ul>
+        {% for tender in tenders %}
+            <li><a href="{% url 'tender_details' tender.id %}">{{ tender.tender_number }} - {{ tender.name }}</a></li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'logout' %}">Logout</a>
+</body>
+</html>
