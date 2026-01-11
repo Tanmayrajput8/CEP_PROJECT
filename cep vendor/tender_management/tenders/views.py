@@ -68,7 +68,7 @@ def tender_details(request, tender_id):
     context = {
         "tender": tender,
         "vendors": vendors,
-        "shortfall_stages": [1, 2, 3],  # ✅ Pass this list to the template
+        "shortfall_stages": [1, 2, 3],  # Pass this list to the template
     }
     
     return render(request, "tenders/tender_details.html",context)
@@ -128,4 +128,5 @@ def add_vendor_to_tender(request, tender_id):
         'doc_formset': doc_formset,
         'shortfall_formset': shortfall_formset
     })
+
     
